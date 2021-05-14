@@ -91,5 +91,18 @@ server_name:/home /home/ nfs _netdev,auto 0 0
 
 ## 예제
 
-### 1. 실행 방법
+### 1. 원주율 계산하기
 
+PI.c 파일은 라이프니츠의 원주율 공식을 이용하여 원주율을 계산하는 프로그램이다. 이 예제에서는  라즈베리 파이 4대를 활용하여 병렬 컴퓨팅을 한다. mpicc를 이용하여 소스코드를 컴파일하고 mpirun을 이용하여 실행한다. mpirun의 -np는 사용되는 클라이언트의 개수, -machinefile은 사용되는 클라이언트의 도메인 이름을 지정하는 것이다. 따라서 host 파일에 각 클라이언트의 도메인 이름을 입력해야 한다.
+
+mpicc PI.c -o PI.exe
+
+mpirun -np 4 -machinefile host PI.exe
+
+### 2. 서울시립대 로고 그리기
+
+cxgraphics.c는 라즈베리 파이 6대를 이용하여 병렬 컴퓨팅을 한다. 각각의 클라이언트는 그라디언트 값을 계산하여 반환한다.
+
+## License
+
+© Youngcheor Ra
