@@ -1,6 +1,6 @@
 # Raspberry Pi cluster computer
 
-## 목적
+## 목표
 
 ![라즈베리 파이 병렬 컴퓨터 모델](image/image_01.jpg)
 
