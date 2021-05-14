@@ -1,7 +1,3 @@
-/*
-   (C) 2001 by Argonne National Laboratory.
-       See COPYRIGHT in top-level directory.
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -9,6 +5,7 @@
 #include "mpe_graphics.h"
 
 int makelimit(int sum);
+
 int main( int argc, char** argv )
 {
     MPE_XGraph graph;
@@ -39,8 +36,6 @@ int main( int argc, char** argv )
                               -1, -1, x_size, y_size, 0 );
     
 
-//    ierr = MPE_Open_graphics( &graph, MPI_COMM_WORLD, NULL,
-//                              -1, -1, x_size, y_size, 0 );
     if ( ierr != MPE_SUCCESS ) {
         fprintf( stderr, "%d : MPE_Open_graphics() fails\n", my_rank );
         ierr = MPI_Abort( MPI_COMM_WORLD, 1 );
@@ -49,50 +44,33 @@ int main( int argc, char** argv )
     my_color = (MPE_Color) (my_rank + 1);
 
 	int i, j;
-/*    if ( my_rank == 0 ){
-	for( i = 0; i<300; i++){
-		for( j = 0; j<= i/3; j++){
-
-			MPE_Add_RGB_color( graph, makelimit(1024*i+16*j+(4096-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(8960-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(34304-1024*i-16*j)*0.8), &my_color);
+    if ( my_rank == 0 ){
+    	for( i = 0; i<300; i++){
+    		for( j = 0; j<= i/3; j++){
+    		    MPE_Add_RGB_color( graph, makelimit(1024*i+16*j+(4096-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(8960-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(34304-1024*i-16*j)*0.8), &my_color);
 	        	ierr = MPE_Draw_point( graph, i, j, (MPE_Color)my_color);
 	        	ierr = MPE_Draw_point( graph, 300-i, 100-j, (MPE_Color)my_color);
-		}
+	        }
+	    }
 	}
-    }*/
-
     else if ( my_rank > 0 && my_rank < 3){
-	for( i = my_rank%2; i<300; i+=2){
-		for( j = 0; j<=i/3; j++){
-			
-			MPE_Add_RGB_color( graph, makelimit(1024*i+16*j+(4096-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(8960-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(34304-1024*i-16*j)*0.8), &my_color);
+	    for( i = my_rank%2; i<300; i+=2){
+	    	for( j = 0; j<=i/3; j++){
+	    	    MPE_Add_RGB_color( graph, makelimit(1024*i+16*j+(4096-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(8960-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(34304-1024*i-16*j)*0.8), &my_color);
 	        	ierr = MPE_Draw_point( graph, i+350, j, (MPE_Color)my_color);
 	        	ierr = MPE_Draw_point( graph, 650-i, 100-j, (MPE_Color)my_color);
-		}
-	}
+		    }
+	    }
     }
-
     else if ( my_rank > 2 && my_rank < 6){
-	for( i = my_rank%3; i<300; i+=3){
-		for( j = 0; j<= i/3; j++){
-			
-			MPE_Add_RGB_color( graph, makelimit(1024*i+16*j+(4096-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(8960-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(34304-1024*i-16*j)*0.8), &my_color);
+        for( i = my_rank%3; i<300; i+=3){
+            for( j = 0; j<= i/3; j++){
+                MPE_Add_RGB_color( graph, makelimit(1024*i+16*j+(4096-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(8960-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(34304-1024*i-16*j)*0.8), &my_color);
 	        	ierr = MPE_Draw_point( graph, i+700, j, (MPE_Color)my_color);
 	        	ierr = MPE_Draw_point( graph, 1000-i, 100-j, (MPE_Color)my_color);
-		}
-	}
+		    }
+	    }
     }
-
-/*
-	for( i = my_rank%mp_size; i<300; i+=mp_size){
-		for( j = 0; j<=i/3; j++){
-			
-			MPE_Add_RGB_color( graph, makelimit(1024*i+16*j+(4096-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(8960-1024*i-16*j)*0.8), makelimit(1024*i+16*j+(34304-1024*i-16*j)*0.8), &my_color);
-	        	ierr = MPE_Draw_point( graph, i+350, j, (MPE_Color)my_color);
-	        	ierr = MPE_Draw_point( graph, 650-i, 100-j, (MPE_Color)my_color);
-		}
-	}
-*/
-//    ierr = MPE_Draw_circle( graph, 200, 200, 20+my_rank*5, my_color );
     ierr = MPE_Update( graph );
 
     if ( my_rank == 0 ) {
@@ -104,9 +82,7 @@ int main( int argc, char** argv )
         sleep(1);
     }
     MPI_Barrier( MPI_COMM_WORLD );
-
     ierr = MPE_Close_graphics( &graph );
-
     MPI_Finalize();
     
     return 0;
@@ -114,6 +90,6 @@ int main( int argc, char** argv )
 
 int makelimit(int sum){
 	if (sum < 0)sum=0;
-	if (sum > 60000)sum=60000;
+	if (sum > 60000) sum=60000;
 	return sum;
 }
