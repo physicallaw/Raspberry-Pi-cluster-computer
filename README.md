@@ -99,7 +99,7 @@ mpicc PI.c -o PI.exe
 
 mpirun -np 4 -machinefile host PI.exe
 
-### 2. 서울시립대 로고 그리기
+### 2. 로고 그리기
 
 cxgraphics.c는 라즈베리 파이 6대를 이용하여 병렬 컴퓨팅을 한다. 각각의 클라이언트는 그라디언트 값을 계산하여 반환한다.
 
